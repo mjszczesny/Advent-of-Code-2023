@@ -1,0 +1,287 @@
+//@author maxjs
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+public class day1 {
+
+    public static void main(String[] args) {
+        ArrayList<String> myList = new ArrayList<String>();
+        try {
+            BufferedReader br = new BufferedReader(new FileReader("day1.txt"));
+            //Grab a line of text (this case they happen to be integers)
+            String line = br.readLine();
+            while (line != null) {
+                //Add to the bottom of the ArrayList
+                myList.add(line);
+
+                line = br.readLine();  //try to read again
+            }
+            br.close();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(day1.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(day1.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        //------------------------------------CODE BELOW------------------------------------
+        //Star 1
+
+        int sum = 0;
+        for (int i = 0; i < myList.size(); i++) {
+            String s = myList.get(i);
+            int first = 0;
+            int last = 0;
+            //first digit
+            for (int w = 0; w < s.length(); w++) {
+                char c = s.charAt(w);
+                boolean isDigit = Character.isDigit(c);
+                if (isDigit) {
+                    first = Integer.parseInt(s.substring(w, w + 1));
+                    break;
+                }
+            }
+            //second digit
+            for (int e = s.length(); e > 0; e--) {
+                char c = s.charAt(e - 1);
+                boolean isDigit = Character.isDigit(c);
+                if (isDigit) {
+                    last = Integer.parseInt(s.substring(e - 1, e));
+                    break;
+                }
+            }
+            sum += ((first * 10) + last);
+        }
+        System.out.println("Answer #1 " + sum);
+
+        //Star 2
+        int sumStar2 = 0;
+        for (int i = 0; i < myList.size(); i++) {
+            String s = myList.get(i);
+            int first = 0;
+            int last = 0;
+            //first digit
+            for (int w = 0; w < s.length(); w++) {
+                char c = s.charAt(w);
+                boolean isDigit = Character.isDigit(c);
+                if (isDigit) {
+                    first = Integer.parseInt(s.substring(w, w + 1));
+                    boolean found = false;
+                    int index = 0;
+                    for (int q = 0; q + 2 < w; q++) {
+                        if (s.substring(q, q + 3).equals("one")) {
+                            if (!found) {
+                                found = true;
+                                index = q;
+                                first = 1;
+                            } else if (index > q && found) {
+                                index = q;
+                                first = 1;
+                            }
+                        }
+                        if (s.substring(q, q + 3).equals("two")) {
+                            if (!found) {
+                                found = true;
+                                index = q;
+                                first = 2;
+                            } else if (index > q && found) {
+                                index = q;
+                                first = 2;
+                            }
+                        }
+                        if (s.substring(q, q + 3).equals("six")) {
+                            if (!found) {
+                                found = true;
+                                index = q;
+                                first = 6;
+                            } else if (index > q && found) {
+                                index = q;
+                                first = 6;
+                            }
+                        }
+                    }
+                    for (int q = 0; q + 3 < w; q++) {
+                        if (s.substring(q, q + 4).equals("four")) {
+                            if (!found) {
+                                found = true;
+                                index = q;
+                                first = 4;
+                            } else if (index > q && found) {
+                                index = q;
+                                first = 4;
+                            }
+                        }
+                        if (s.substring(q, q + 4).equals("five")) {
+                            if (!found) {
+                                found = true;
+                                index = q;
+                                first = 5;
+                            } else if (index > q && found) {
+                                index = q;
+                                first = 5;
+                            }
+                        }
+                        if (s.substring(q, q + 4).equals("nine")) {
+                            if (!found) {
+                                found = true;
+                                index = q;
+                                first = 9;
+                            } else if (index > q && found) {
+                                index = q;
+                                first = 9;
+                            }
+                        }
+                    }
+                    for (int q = 0; q + 4 < w; q++) {
+                        if (s.substring(q, q + 5).equals("three")) {
+                            if (!found) {
+                                found = true;
+                                index = q;
+                                first = 3;
+                            } else if (index > q && found) {
+                                index = q;
+                                first = 3;
+                            }
+                        }
+                        if (s.substring(q, q + 5).equals("seven")) {
+                            if (!found) {
+                                found = true;
+                                index = q;
+                                first = 7;
+                            } else if (index > q && found) {
+                                index = q;
+                                first = 7;
+                            }
+                        }
+                        if (s.substring(q, q + 5).equals("eight")) {
+                            if (!found) {
+                                found = true;
+                                index = q;
+                                first = 8;
+                            } else if (index > q && found) {
+                                index = q;
+                                first = 8;
+                            }
+                        }
+                    }
+                    break;
+                }
+            }
+
+            //second digit number
+            for (int e = s.length(); e > 0; e--) {
+                char c = s.charAt(e - 1);
+                boolean isDigit = Character.isDigit(c);
+                if (isDigit) {
+                    last = Integer.parseInt(s.substring(e - 1, e));
+                    boolean found = false;
+                    int index = 0;
+                    for (int q = s.length(); q - 2 > e; q--) {
+                        if (s.substring(q - 3, q).equals("one")) {
+                            if (!found) {
+                                found = true;
+                                index = q;
+                                last = 1;
+                            } else if (index < q && found) {
+                                index = q;
+                                last = 1;
+                            }
+                        }
+                        if (s.substring(q - 3, q).equals("two")) {
+                            if (!found) {
+                                found = true;
+                                index = q;
+                                last = 2;
+                            } else if (index < q && found) {
+                                index = q;
+                                last = 2;
+                            }
+                        }
+                        if (s.substring(q - 3, q).equals("six")) {
+                            if (!found) {
+                                found = true;
+                                index = q;
+                                last = 6;
+                            } else if (index < q && found) {
+                                index = q;
+                                last = 6;
+                            }
+                        }
+                    }
+                    for (int q = s.length(); q - 3 > e; q--) {
+                        if (s.substring(q - 4, q).equals("four")) {
+                            if (!found) {
+                                found = true;
+                                index = q;
+                                last = 4;
+                            } else if (index < q && found) {
+                                index = q;
+                                last = 4;
+                            }
+                        }
+                        if (s.substring(q - 4, q).equals("five")) {
+                            if (!found) {
+                                found = true;
+                                index = q;
+                                last = 5;
+                            } else if (index < q && found) {
+                                index = q;
+                                last = 5;
+                            }
+                        }
+                        if (s.substring(q - 4, q).equals("nine")) {
+                            if (!found) {
+                                found = true;
+                                index = q;
+                                last = 9;
+                            } else if (index < q && found) {
+                                index = q;
+                                last = 9;
+                            }
+                        }
+                    }
+                    for (int q = s.length(); q - 4 > e; q--) {
+                        if (s.substring(q - 5, q).equals("three")) {
+                            if (!found) {
+                                found = true;
+                                index = q;
+                                last = 3;
+                            } else if (index < q && found) {
+                                index = q;
+                                last = 3;
+                            }
+                        }
+                        if (s.substring(q - 5, q).equals("seven")) {
+                            if (!found) {
+                                found = true;
+                                index = q;
+                                last = 7;
+                            } else if (index < q && found) {
+                                index = q;
+                                last = 7;
+                            }
+                        }
+                        if (s.substring(q - 5, q).equals("eight")) {
+                            if (!found) {
+                                found = true;
+                                index = q;
+                                last = 8;
+                            } else if (index < q && found) {
+                                index = q;
+                                last = 8;
+                            }
+                        }
+                    }
+                    break;
+                }
+
+            }
+            sumStar2 += (first * 10) + last;
+        }
+        System.out.println("Answer #2 " + sumStar2);
+    }
+}
