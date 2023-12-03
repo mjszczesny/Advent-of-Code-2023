@@ -1,0 +1,167 @@
+//@author maxjs
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+public class day2 {
+
+    public static void main(String[] args) {
+        ArrayList<String> myList = new ArrayList<String>();
+        try {
+            BufferedReader br = new BufferedReader(new FileReader("day2.txt"));
+            //Grab a line of text (this case they happen to be integers)
+            String line = br.readLine();
+            while (line != null) {
+                //Add to the bottom of the ArrayList
+                myList.add(line);
+
+                line = br.readLine();  //try to read again
+            }
+            br.close();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(day2.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(day2.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        //------------------------------------CODE BELOW------------------------------------
+        //Star 1
+        int rMax = 12;
+        int gMax = 13;
+        int bMax = 14;
+
+        int sum = 0;
+        for (int i = 0; myList.size() > i; i++) {
+            String temp = myList.get(i);
+            int afterColon = temp.indexOf(":");
+            temp = temp.substring(afterColon + 2);
+
+            boolean trigger = false;
+
+            ArrayList<String> number = new ArrayList<String>();
+            ArrayList<String> color = new ArrayList<String>();
+            String pull = temp;
+            while (true) {
+                
+                int space = pull.indexOf(" ");
+                int digit = -2;
+                if(pull.contains(",") && !pull.contains(";")){
+                    digit = pull.indexOf(",");
+                } else if(pull.contains(";") && !pull.contains(",")){
+                    digit = pull.indexOf(";");
+                } else if(!pull.contains(";") && !pull.contains(",")){
+                    number.add(pull.substring(0, space));
+                    color.add(pull.substring(space + 1, pull.length()));
+                    break;
+                } else if(pull.contains(",") && pull.contains(";")){
+                    if(pull.indexOf(",") < pull.indexOf(";")){
+                        digit = pull.indexOf(",");
+                    }
+                    if(pull.indexOf(";") < pull.indexOf(",")){
+                        digit = pull.indexOf(";");
+                    }
+                }
+                
+                number.add(pull.substring(0, space));
+                color.add(pull.substring(space + 1, digit));
+                pull = pull.substring(digit + 2);
+            }
+            for (int v = 0; number.size() > v; v++) {
+                if (color.get(v).equals("red")) {
+                    if (Integer.parseInt(number.get(v)) > rMax) {
+                        trigger = true;
+                    }
+                }
+                if (color.get(v).equals("green")) {
+                    if (Integer.parseInt(number.get(v)) > gMax) {
+                        trigger = true;
+                    }
+                }
+                if (color.get(v).equals("blue")) {
+                    if (Integer.parseInt(number.get(v)) > bMax) {
+                        trigger = true;
+                    }
+                }
+            }
+
+            if (!trigger) {
+                sum += i + 1;
+            }
+        }
+        System.out.println("Answer #1 " + sum);
+
+        //Star 2
+        int power = 0;
+        for (int i = 0; myList.size() > i; i++) {
+            String temp = myList.get(i);
+            int afterColon = temp.indexOf(":");
+            temp = temp.substring(afterColon + 2);
+
+            ArrayList<String> number = new ArrayList<String>();
+            ArrayList<String> color = new ArrayList<String>();
+            String pull = temp;
+            while (true) {
+                
+                int space = pull.indexOf(" ");
+                int digit = -2;
+                if(pull.contains(",") && !pull.contains(";")){
+                    digit = pull.indexOf(",");
+                } else if(pull.contains(";") && !pull.contains(",")){
+                    digit = pull.indexOf(";");
+                } else if(!pull.contains(";") && !pull.contains(",")){
+                    number.add(pull.substring(0, space));
+                    color.add(pull.substring(space + 1, pull.length()));
+                    break;
+                } else if(pull.contains(",") && pull.contains(";")){
+                    if(pull.indexOf(",") < pull.indexOf(";")){
+                        digit = pull.indexOf(",");
+                    }
+                    if(pull.indexOf(";") < pull.indexOf(",")){
+                        digit = pull.indexOf(";");
+                    }
+                }
+                
+                number.add(pull.substring(0, space));
+                color.add(pull.substring(space + 1, digit));
+                pull = pull.substring(digit + 2);
+            }
+
+            int rMin = 0;
+            int gMin = 0;
+            int bMin = 0;
+
+            for (int v = 0; color.size() > v; v++) {
+                if (color.get(v).equals("red")) {
+                    if (Integer.parseInt(number.get(v)) > rMin) {
+                        rMin = Integer.parseInt(number.get(v));
+                    }
+                } else if (color.get(v).equals("green")) {
+                    if (Integer.parseInt(number.get(v)) > gMin) {
+                        gMin = Integer.parseInt(number.get(v));
+                    }
+                } else if (color.get(v).equals("blue")) {
+                    if (Integer.parseInt(number.get(v)) > bMin) {
+                        bMin = Integer.parseInt(number.get(v));
+                    }
+                }
+            }
+
+            if (rMin == 0 || gMin == 0 || bMin == 0) {
+                System.out.println("Line: " + i);
+                for (int s = 0; s < number.size(); s++) {
+                    System.out.println(number.get(s));
+                    System.out.println(color.get(s));
+                }
+            }
+            
+            power += (rMin * gMin * bMin);
+        }
+        System.out.println("Answer #2 " + power);
+    }
+}
+ 
